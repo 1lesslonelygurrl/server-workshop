@@ -1,40 +1,15 @@
-const taskInput = document.getElementById("taskInput");
-const addButton = document.getElementById("addButton");
 const taskList = document.getElementById("taskList");
 
-async function loadTasks() {
-    const response = await fetch("/api/tasks");
-    const tasks = await response.json();
+const tasks = [
+    { title: "Learn Node.js", completed: false },
+    { title: "Build REST API", completed: false }
+];
 
-    taskList.innerHTML = "";
+tasks.forEach(task => {
+    const li = document.createElement("li");
 
-    tasks.forEach(task => {
-        const li = document.createElement("li");
+    li.textContent =
+        `${task.title} - ${task.completed ? "Done" : "Not done"}`;
 
-        li.textContent =
-            `${task.title} - ${task.completed ? "Done" : "Not done"}`;
-
-        taskList.appendChild(li);
-    });
-}
-
-addButton.addEventListener("click", async () => {
-    const title = taskInput.value.trim();
-
-    if (!title) return;
-
-    await fetch("/api/tasks", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            title: title
-        })
-    });
-
-    taskInput.value = "";
-    loadTasks();
+    taskList.appendChild(li);
 });
-
-loadTasks();
